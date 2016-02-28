@@ -1,0 +1,12 @@
+name: CombinedForce
+main: cc.isotopestudio.CombinedForce.CombinedForce
+
+author: Mars
+description: Jobs
+website: http://isotopestudio.cc
+version: 1.0
+commands:
+  inlay:
+    description: CombinedForce Command.
+    usage: /xq
+    aliases: xq
