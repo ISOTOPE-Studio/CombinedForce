@@ -1,11 +1,8 @@
 package cc.isotopestudio.CombinedForce;
 
-import java.io.IOException;
-
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitTask;
 
 public class CombinedForce extends JavaPlugin {
 
