@@ -1,8 +1,9 @@
 package cc.isotopestudio.CombinedForce;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -21,43 +22,52 @@ public class ClassGUI implements Listener {
 
 	private String name;
 	private int size;
-	private OptionClickEventHandler handler;
 	private Plugin plugin;
 	private String[] optionNames;
 	private ItemStack[] optionIcons;
-	private boolean willDestory;
-	private ArrayList<Integer> clickList;
 
-	public ClassGUI(String name, int size, OptionClickEventHandler handler, Plugin plugin) {
+	public ClassGUI(String name, int size, Plugin plugin) {
 		this.name = name;
 		this.size = size;
-		this.handler = handler;
 		this.plugin = plugin;
 		this.optionNames = new String[size];
 		this.optionIcons = new ItemStack[size];
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);
-		willDestory = false;
-	}
+		ItemStack greyGlass = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 7);
+		ItemStack blueGlass = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 3);
+		ItemStack yellowGlass = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 4);
+		ItemStack orangeGlass = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 1);
+		for (int i = 0; i < 27; i++) {
+			if (i % 9 == 0 || i % 9 == 8)
+				setOption(i, greyGlass, new StringBuilder().append(ChatColor.AQUA).append("宝石镶嵌").toString(),
+						new StringBuilder().append(ChatColor.GOLD).append(ChatColor.ITALIC).append("请在中心处放置宝石")
+								.toString());
+			if (i % 9 == 1 || i % 9 == 7)
+				setOption(i, blueGlass, new StringBuilder().append(ChatColor.AQUA).append("宝石镶嵌").toString(),
+						new StringBuilder().append(ChatColor.GOLD).append(ChatColor.ITALIC).append("请在中心处放置宝石")
+								.toString());
 
-	public ClassGUI(String name, int size, OptionClickEventHandler handler, Plugin plugin, boolean willDestory) {
-		this.name = name;
-		this.size = size;
-		this.handler = handler;
-		this.plugin = plugin;
-		this.optionNames = new String[size];
-		this.optionIcons = new ItemStack[size];
-		plugin.getServer().getPluginManager().registerEvents(this, plugin);
-		this.willDestory = willDestory;
+			if (i % 9 == 2 || i % 9 == 6)
+				setOption(i, yellowGlass, new StringBuilder().append(ChatColor.AQUA).append("宝石镶嵌").toString(),
+						new StringBuilder().append(ChatColor.GOLD).append(ChatColor.ITALIC).append("请在中心处放置宝石")
+								.toString());
+
+			if (i % 9 == 3 || i % 9 == 5)
+				setOption(i, orangeGlass, new StringBuilder().append(ChatColor.AQUA).append("宝石镶嵌").toString(),
+						new StringBuilder().append(ChatColor.GOLD).append(ChatColor.ITALIC).append("请在中心处放置宝石")
+								.toString());
+			if (i == 4 || i == 22)
+				setOption(i, orangeGlass, new StringBuilder().append(ChatColor.AQUA).append("宝石镶嵌").toString(),
+						new StringBuilder().append(ChatColor.GOLD).append(ChatColor.ITALIC).append("请在中心处放置宝石")
+								.toString());
+
+		}
 	}
 
 	public ClassGUI setOption(int position, ItemStack icon, String name, String... info) {
 		optionNames[position] = name;
 		optionIcons[position] = setItemNameAndLore(icon, name, info);
 		return this;
-	}
-
-	public void setHandler(OptionClickEventHandler handler) {
-		this.handler = handler;
 	}
 
 	public void open(Player player) {
@@ -72,51 +82,46 @@ public class ClassGUI implements Listener {
 
 	public void Destory() {
 		HandlerList.unregisterAll(this);
-		handler = null;
 		plugin = null;
 		optionNames = null;
 		optionIcons = null;
 	}
 
-	public void setClickList(ArrayList<Integer> list) {
-		clickList = list;
-	}
-
-	private boolean ifValueExist(int n) {
-		for (int i : clickList) {
-			if (i == n)
-				return true;
-		}
-		return false;
-	}
-
 	@EventHandler(priority = EventPriority.MONITOR)
-	void onInventoryClick(InventoryClickEvent event) {
+	void onInventoryClick(final InventoryClickEvent event) {
 		if (event.getInventory().getTitle().equals(name)) {
-			event.setCancelled(true);
-			int slot = event.getRawSlot();
-			if (clickList == null) {
-				clickList = new ArrayList<Integer>();
+
+			System.out.println("\n\n\n");
+			System.out.print("Current: " + event.getCurrentItem().getType().toString());
+			System.out.print("Cursor: " + event.getCursor().getType().toString());
+			int size = event.getRawSlot();
+			int pos = event.getSlot();
+			System.out.print(event.getAction().toString());
+			System.out.print(event.getSlot());
+			System.out.print(size);
+
+			if (!(event.getCurrentItem().getType().equals(Material.EMERALD)
+					|| event.getCursor().getType().equals(Material.EMERALD))) {
+				System.out.print("InCorrect");
+				event.setCancelled(true);
+				return;
 			}
-			clickList.add(1);
-			clickList.add(2);
-			clickList.add(3);
-			clickList.add(4);
-			if (ifValueExist(slot) && optionNames[slot] != null) {
+
+			System.out.println("Correct");
+
+			if (size == 13 && pos == 13) {
 				Plugin plugin = this.plugin;
-				OptionClickEvent e = new OptionClickEvent((Player) event.getWhoClicked(), slot, optionNames[slot]);
-				handler.onOptionClick(e);
-				if (e.willClose()) {
-					final Player p = (Player) event.getWhoClicked();
-					Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-						public void run() {
-							p.closeInventory();
-						}
-					}, 1);
-				}
-				if (e.willDestroy()) {
-					Destory();
-				}
+				Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+					public void run() {
+						ItemStack item = event.getInventory().getItem(13);
+						System.out.print(item.getType().toString());
+						final Player p = (Player) event.getWhoClicked();
+						p.closeInventory();
+						p.sendMessage("true");
+						Destory();
+					}
+				}, 5);
+
 			}
 		}
 	}
@@ -124,61 +129,12 @@ public class ClassGUI implements Listener {
 	@EventHandler(priority = EventPriority.MONITOR)
 	void onInventoryClose(InventoryCloseEvent event) {
 		if (event.getInventory().getTitle().equals(name)) {
-			if (willDestory) {
-				Destory();
+			try {
+				event.getPlayer().getWorld().dropItem(event.getPlayer().getEyeLocation(),
+						event.getInventory().getItem(13));
+			} catch (Exception e) {
 			}
-		}
-	}
-
-	public interface OptionClickEventHandler {
-		public void onOptionClick(OptionClickEvent event);
-	}
-
-	public class OptionClickEvent {
-		private Player player;
-		private int position;
-		private String name;
-		private boolean close;
-		private boolean Destory;
-
-		public OptionClickEvent(Player player, int position, String name) {
-			this.player = player;
-			this.position = position;
-			this.name = name;
-			this.close = true;
-			this.Destory = false;
-		}
-
-		public OptionClickEvent(Player player) {
-			this.player = player;
-		}
-
-		public Player getPlayer() {
-			return player;
-		}
-
-		public int getPosition() {
-			return position;
-		}
-
-		public String getName() {
-			return name;
-		}
-
-		public boolean willClose() {
-			return close;
-		}
-
-		public boolean willDestroy() {
-			return Destory;
-		}
-
-		public void setWillClose(boolean close) {
-			this.close = close;
-		}
-
-		public void setWillDestroy(boolean Destory) {
-			this.Destory = Destory;
+			Destory();
 		}
 	}
 

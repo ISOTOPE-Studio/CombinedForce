@@ -52,42 +52,8 @@ public class CommandInlay implements CommandExecutor {
 				return true;
 			}
 			player.sendMessage("POS" + pos);
-			ClassGUI GUI = new ClassGUI("宝石镶嵌", 27, new ClassGUI.OptionClickEventHandler() {
-				@Override
-				public void onOptionClick(ClassGUI.OptionClickEvent event) {
-					event.setWillClose(false);
-					
-				}
-			}, plugin, true);
-			ItemStack greyGlass = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 7);
-			ItemStack blueGlass = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 3);
-			ItemStack yellowGlass = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 4);
-			ItemStack orangeGlass = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 1);
-			for (int i = 0; i < 27; i++) {
-				if (i % 9 == 0 || i % 9 == 8)
-					GUI.setOption(i, greyGlass, new StringBuilder().append(ChatColor.AQUA).append("宝石镶嵌").toString(),
-							new StringBuilder().append(ChatColor.GOLD).append(ChatColor.ITALIC).append("请在中心处放置宝石")
-									.toString());
-				if (i % 9 == 1 || i % 9 == 7)
-					GUI.setOption(i, blueGlass, new StringBuilder().append(ChatColor.AQUA).append("宝石镶嵌").toString(),
-							new StringBuilder().append(ChatColor.GOLD).append(ChatColor.ITALIC).append("请在中心处放置宝石")
-									.toString());
-
-				if (i % 9 == 2 || i % 9 == 6)
-					GUI.setOption(i, yellowGlass, new StringBuilder().append(ChatColor.AQUA).append("宝石镶嵌").toString(),
-							new StringBuilder().append(ChatColor.GOLD).append(ChatColor.ITALIC).append("请在中心处放置宝石")
-									.toString());
-
-				if (i % 9 == 3 || i % 9 == 5)
-					GUI.setOption(i, orangeGlass, new StringBuilder().append(ChatColor.AQUA).append("宝石镶嵌").toString(),
-							new StringBuilder().append(ChatColor.GOLD).append(ChatColor.ITALIC).append("请在中心处放置宝石")
-									.toString());
-				if (i == 4 || i == 22)
-					GUI.setOption(i, orangeGlass, new StringBuilder().append(ChatColor.AQUA).append("宝石镶嵌").toString(),
-							new StringBuilder().append(ChatColor.GOLD).append(ChatColor.ITALIC).append("请在中心处放置宝石")
-									.toString());
-
-			}
+			ClassGUI GUI = new ClassGUI("宝石镶嵌", 27, plugin);
+			
 			
 			GUI.open(player);
 			return true;
