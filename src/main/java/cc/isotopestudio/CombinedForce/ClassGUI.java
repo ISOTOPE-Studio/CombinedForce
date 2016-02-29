@@ -1,6 +1,8 @@
 package cc.isotopestudio.CombinedForce;
 
 import java.util.Arrays;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -22,16 +24,20 @@ public class ClassGUI implements Listener {
 
 	private String name;
 	private int size;
+	private int pos;
 	private Plugin plugin;
 	private String[] optionNames;
 	private ItemStack[] optionIcons;
+	private boolean ifFinished;
 
-	public ClassGUI(String name, int size, Plugin plugin) {
+	public ClassGUI(String name, int size, int pos, Plugin plugin) {
 		this.name = name;
 		this.size = size;
+		this.pos = pos;
 		this.plugin = plugin;
 		this.optionNames = new String[size];
 		this.optionIcons = new ItemStack[size];
+		ifFinished = false;
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);
 		ItemStack greyGlass = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 7);
 		ItemStack blueGlass = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 3);
@@ -91,33 +97,63 @@ public class ClassGUI implements Listener {
 	void onInventoryClick(final InventoryClickEvent event) {
 		if (event.getInventory().getTitle().equals(name)) {
 
-			System.out.println("\n\n\n");
-			System.out.print("Current: " + event.getCurrentItem().getType().toString());
-			System.out.print("Cursor: " + event.getCursor().getType().toString());
+			// System.out.println("\n\n\n");
+			// System.out.print("Current: " +
+			// event.getCurrentItem().getType().toString());
+			// System.out.print("Cursor: " +
+			// event.getCursor().getType().toString());
 			int size = event.getRawSlot();
 			int pos = event.getSlot();
-			System.out.print(event.getAction().toString());
-			System.out.print(event.getSlot());
-			System.out.print(size);
-
-			if (!(event.getCurrentItem().getType().equals(Material.EMERALD)
-					|| event.getCursor().getType().equals(Material.EMERALD))) {
-				System.out.print("InCorrect");
+			// System.out.print(event.getAction().toString());
+			// System.out.print(event.getSlot());
+			// System.out.print(size);
+			try {
+				if (!(event.getCurrentItem().getType().equals(Material.EMERALD)
+						|| event.getCursor().getType().equals(Material.EMERALD))) {
+					// System.out.print("InCorrect");
+					event.setCancelled(true);
+					return;
+				}
+			} catch (Exception e) {
 				event.setCancelled(true);
 				return;
 			}
-
-			System.out.println("Correct");
+			// System.out.println("Correct");
 
 			if (size == 13 && pos == 13) {
 				Plugin plugin = this.plugin;
 				Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 					public void run() {
-						ItemStack item = event.getInventory().getItem(13);
-						System.out.print(item.getType().toString());
-						final Player p = (Player) event.getWhoClicked();
-						p.closeInventory();
-						p.sendMessage("true");
+						ItemStack gem = event.getInventory().getItem(13);
+						Player player = (Player) event.getWhoClicked();
+						int index = 0, pos = -1;
+						List<String> gemlore = gem.getItemMeta().getLore();
+						String loreString = null;
+						try {
+							for (String temp : gemlore) {
+								if (temp.contains(": +")) {
+									pos = index;
+									loreString = temp;
+									break;
+								}
+								index++;
+							}
+						} catch (Exception e) {
+							return;
+						}
+						if (pos == -1) {
+							return;
+						}
+						ifFinished = true;
+						ItemStack item = player.getItemInHand();
+						ItemMeta meta = item.getItemMeta();
+						List<String> lore = item.getItemMeta().getLore();
+						lore.set(pos, loreString);
+						meta.setLore(lore);
+						item.setItemMeta(meta);
+						player.closeInventory();
+						player.sendMessage((new StringBuilder(CombinedForce.prefix)).append(ChatColor.AQUA)
+								.append("≥…π¶œ‚«∂£°").toString());
 						Destory();
 					}
 				}, 5);
@@ -129,11 +165,12 @@ public class ClassGUI implements Listener {
 	@EventHandler(priority = EventPriority.MONITOR)
 	void onInventoryClose(InventoryCloseEvent event) {
 		if (event.getInventory().getTitle().equals(name)) {
-			try {
-				event.getPlayer().getWorld().dropItem(event.getPlayer().getEyeLocation(),
-						event.getInventory().getItem(13));
-			} catch (Exception e) {
-			}
+			if (!ifFinished)
+				try {
+					event.getPlayer().getWorld().dropItem(event.getPlayer().getEyeLocation(),
+							event.getInventory().getItem(13));
+				} catch (Exception e) {
+				}
 			Destory();
 		}
 	}

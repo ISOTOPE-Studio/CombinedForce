@@ -3,13 +3,11 @@ package cc.isotopestudio.CombinedForce;
 import java.util.List;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 public class CommandInlay implements CommandExecutor {
 
@@ -26,13 +24,18 @@ public class CommandInlay implements CommandExecutor {
 				return false;
 			}
 			Player player = (Player) sender;
+			if (!player.hasPermission("CombinedForce.use")) {
+				player.sendMessage(
+						(new StringBuilder(CombinedForce.prefix)).append(ChatColor.RED).append("你没有权限").toString());
+				return true;
+			}
 			ItemStack item = player.getItemInHand();
 			;
 			if (item.getAmount() != 1) {
-				player.sendMessage(CombinedForce.prefix);
+				player.sendMessage((new StringBuilder(CombinedForce.prefix)).append(ChatColor.RED).append("手中物品数量必须为1个")
+						.toString());
 				return true;
 			}
-			ItemMeta meta = item.getItemMeta();
 			int index = 0, pos = -1;
 			List<String> lore = item.getItemMeta().getLore();
 			try {
@@ -44,17 +47,17 @@ public class CommandInlay implements CommandExecutor {
 					index++;
 				}
 			} catch (Exception e) {
-				player.sendMessage("不可镶嵌");
+				player.sendMessage(
+						(new StringBuilder(CombinedForce.prefix)).append(ChatColor.RED).append("此物品无法镶嵌宝石").toString());
 				return true;
 			}
 			if (pos == -1) {
-				player.sendMessage("不可镶嵌");
+				player.sendMessage(
+						(new StringBuilder(CombinedForce.prefix)).append(ChatColor.RED).append("此物品无法镶嵌宝石").toString());
 				return true;
 			}
-			player.sendMessage("POS" + pos);
-			ClassGUI GUI = new ClassGUI("宝石镶嵌", 27, plugin);
-			
-			
+			ClassGUI GUI = new ClassGUI("宝石镶嵌", 27, pos, plugin);
+
 			GUI.open(player);
 			return true;
 		}

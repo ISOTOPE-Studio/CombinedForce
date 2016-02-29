@@ -1,7 +1,6 @@
 package cc.isotopestudio.CombinedForce;
 
 import org.bukkit.ChatColor;
-import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class CombinedForce extends JavaPlugin {
@@ -12,8 +11,6 @@ public class CombinedForce extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
-		PluginManager pm = this.getServer().getPluginManager();
-		pm.registerEvents(new CombinedEvent(this), this);
 
 		this.getCommand("inlay").setExecutor(new CommandInlay(this));
 
