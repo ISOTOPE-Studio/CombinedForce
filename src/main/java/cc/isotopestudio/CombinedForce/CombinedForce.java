@@ -1,5 +1,7 @@
 package cc.isotopestudio.CombinedForce;
 
+import java.io.File;
+
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -11,8 +13,11 @@ public class CombinedForce extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
+		getLogger().info("加载配置文件中");
+		createFile("config");
 
 		this.getCommand("inlay").setExecutor(new CommandInlay(this));
+		this.getCommand("inlayadd").setExecutor(new CommandInlayAdd(this));
 
 		getLogger().info("CombinedForce 成功加载!");
 		getLogger().info("CombinedForce 由ISOTOPE Studio制作!");
@@ -23,4 +28,14 @@ public class CombinedForce extends JavaPlugin {
 	public void onDisable() {
 		getLogger().info("CombinedForce 成功卸载!");
 	}
+
+	public void createFile(String name) {
+
+		File file;
+		file = new File(getDataFolder(), name + ".yml");
+		if (!file.exists()) {
+			saveDefaultConfig();
+		}
+	}
+
 }
