@@ -24,16 +24,17 @@ public class ClassGUI implements Listener {
 
 	private String name;
 	private int size;
-	private int pos;
+	private int lorePos;
 	private Plugin plugin;
 	private String[] optionNames;
 	private ItemStack[] optionIcons;
 	private boolean ifFinished;
+	private ItemStack extra;
 
-	public ClassGUI(String name, int size, int pos, Plugin plugin) {
+	public ClassGUI(String name, int size, int lorePos, Plugin plugin) {
 		this.name = name;
 		this.size = size;
-		this.pos = pos;
+		this.lorePos = lorePos;
 		this.plugin = plugin;
 		this.optionNames = new String[size];
 		this.optionIcons = new ItemStack[size];
@@ -96,21 +97,13 @@ public class ClassGUI implements Listener {
 	@EventHandler(priority = EventPriority.MONITOR)
 	void onInventoryClick(final InventoryClickEvent event) {
 		if (event.getInventory().getTitle().equals(name)) {
-
-			// System.out.println("\n\n\n");
-			// System.out.print("Current: " +
-			// event.getCurrentItem().getType().toString());
-			// System.out.print("Cursor: " +
-			// event.getCursor().getType().toString());
 			int size = event.getRawSlot();
 			int pos = event.getSlot();
-			// System.out.print(event.getAction().toString());
-			// System.out.print(event.getSlot());
-			// System.out.print(size);
 			try {
 				if (!(event.getCurrentItem().getType().equals(Material.EMERALD)
-						|| event.getCursor().getType().equals(Material.EMERALD))) {
-					// System.out.print("InCorrect");
+						&& event.getCursor().getType().equals(Material.AIR)
+						|| event.getCursor().getType().equals(Material.EMERALD)
+								&& event.getCurrentItem().getType().equals(Material.AIR))) {
 					event.setCancelled(true);
 					return;
 				}
@@ -118,13 +111,16 @@ public class ClassGUI implements Listener {
 				event.setCancelled(true);
 				return;
 			}
-			// System.out.println("Correct");
 
 			if (size == 13 && pos == 13) {
 				Plugin plugin = this.plugin;
 				Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 					public void run() {
 						ItemStack gem = event.getInventory().getItem(13);
+						if (gem.getAmount() != 1) {
+							extra = gem.clone();
+							extra.setAmount(extra.getAmount() - 1);
+						}
 						Player player = (Player) event.getWhoClicked();
 						int index = 0, pos = -1;
 						List<String> gemlore = gem.getItemMeta().getLore();
@@ -148,7 +144,7 @@ public class ClassGUI implements Listener {
 						ItemStack item = player.getItemInHand();
 						ItemMeta meta = item.getItemMeta();
 						List<String> lore = item.getItemMeta().getLore();
-						lore.set(pos, loreString);
+						lore.set(lorePos, loreString);
 						meta.setLore(lore);
 						item.setItemMeta(meta);
 						player.closeInventory();
@@ -171,6 +167,8 @@ public class ClassGUI implements Listener {
 							event.getInventory().getItem(13));
 				} catch (Exception e) {
 				}
+			if (extra != null)
+				event.getPlayer().getWorld().dropItem(event.getPlayer().getEyeLocation(), extra);
 			Destory();
 		}
 	}

@@ -2,9 +2,9 @@ name: CombinedForce
 main: cc.isotopestudio.CombinedForce.CombinedForce
 
 author: Mars
-description: Jobs
+description: Combined Forces, Inlay Gems
 website: http://isotopestudio.cc
-version: 1.0
+version: 1.0.1
 commands:
   inlay:
     description: CombinedForce Command.
