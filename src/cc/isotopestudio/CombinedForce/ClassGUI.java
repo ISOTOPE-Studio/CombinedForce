@@ -117,7 +117,6 @@ class ClassGUI implements Listener {
                         ItemStack gem = event.getInventory().getItem(13);
                         if (gem.getAmount() != 1) {
                             extra = gem.clone();
-                            extra.setAmount(extra.getAmount() - 1);
                         }
                         Player player = (Player) event.getWhoClicked();
                         int index = 0, pos = -1;
@@ -159,14 +158,13 @@ class ClassGUI implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     void onInventoryClose(InventoryCloseEvent event) {
         if (event.getInventory().getTitle().equals(name)) {
-            if (!ifFinished)
-                try {
-                    event.getPlayer().getWorld().dropItem(event.getPlayer().getEyeLocation(),
-                            event.getInventory().getItem(13));
-                } catch (Exception ignored) {
+            if (event.getInventory().getItem(13) != null) {
+                ItemStack item = event.getInventory().getItem(13).clone();
+                if (ifFinished) {
+                    item.setAmount(item.getAmount() - 1);
                 }
-            if (extra != null)
-                event.getPlayer().getWorld().dropItem(event.getPlayer().getEyeLocation(), extra);
+                event.getPlayer().getWorld().dropItem(event.getPlayer().getEyeLocation(), item);
+            }
             Destory();
         }
     }
