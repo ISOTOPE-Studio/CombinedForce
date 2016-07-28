@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2016. ISOTOPE Studio
+ */
+
 package cc.isotopestudio.CombinedForce;
 
 import java.io.File;
@@ -7,14 +11,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class CombinedForce extends JavaPlugin {
 
-	public static final String prefix = (new StringBuilder()).append(ChatColor.GREEN).append("[")
-			.append(ChatColor.ITALIC).append(ChatColor.BOLD).append("镶嵌").append(ChatColor.RESET)
-			.append(ChatColor.GREEN).append("]").append(ChatColor.RESET).toString();
+	static final String prefix = (new StringBuilder()).append(ChatColor.GREEN).append("[融魂系统]")
+			.append(ChatColor.RESET).toString();
 
 	@Override
 	public void onEnable() {
 		getLogger().info("加载配置文件中");
-		createFile("config");
+		createFile();
 
 		this.getCommand("inlay").setExecutor(new CommandInlay(this));
 		this.getCommand("inlayadd").setExecutor(new CommandInlayAdd(this));
@@ -29,10 +32,10 @@ public class CombinedForce extends JavaPlugin {
 		getLogger().info("CombinedForce 成功卸载!");
 	}
 
-	public void createFile(String name) {
+	private void createFile() {
 
 		File file;
-		file = new File(getDataFolder(), name + ".yml");
+		file = new File(getDataFolder(), "config" + ".yml");
 		if (!file.exists()) {
 			saveDefaultConfig();
 		}

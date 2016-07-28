@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2016. ISOTOPE Studio
+ */
+
 package cc.isotopestudio.CombinedForce;
 
 import java.util.List;
@@ -9,11 +13,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-public class CommandInlay implements CommandExecutor {
+class CommandInlay implements CommandExecutor {
 
-	private CombinedForce plugin;
+	private final CombinedForce plugin;
 
-	public CommandInlay(CombinedForce plugin) {
+	CommandInlay(CombinedForce plugin) {
 		this.plugin = plugin;
 	}
 
@@ -56,7 +60,7 @@ public class CommandInlay implements CommandExecutor {
 						(new StringBuilder(CombinedForce.prefix)).append(ChatColor.RED).append("此物品无法镶嵌宝石").toString());
 				return true;
 			}
-			ClassGUI GUI = new ClassGUI("宝石镶嵌", 27, pos, plugin);
+			ClassGUI GUI = new ClassGUI("武魂熔炼", pos, plugin);
 
 			GUI.open(player);
 			return true;
