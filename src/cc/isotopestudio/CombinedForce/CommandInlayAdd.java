@@ -36,7 +36,7 @@ class CommandInlayAdd implements CommandExecutor {
                         (new StringBuilder(CombinedForce.prefix)).append(ChatColor.RED).append("你没有权限").toString());
                 return true;
             }
-            ItemStack item = player.getItemInHand();
+            ItemStack item = player.getInventory().getItemInMainHand();
             if (!isArmor(item.getType())) {
                 player.sendMessage((new StringBuilder(CombinedForce.prefix)).append(ChatColor.RED).append("只能为装备使用")
                         .toString());
