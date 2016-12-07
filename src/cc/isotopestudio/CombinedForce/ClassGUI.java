@@ -141,7 +141,7 @@ class ClassGUI implements Listener {
                         ItemStack item = player.getItemInHand();
                         ItemMeta meta = item.getItemMeta();
                         List<String> lore = item.getItemMeta().getLore();
-                        lore.set(lorePos, plugin.getConfig().getString("loreprefix") + loreString);
+                        lore.set(lorePos, plugin.getConfig().getString("loreprefix","") + loreString);
                         meta.setLore(lore);
                         item.setItemMeta(meta);
                         player.closeInventory();
