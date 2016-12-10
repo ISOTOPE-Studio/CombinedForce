@@ -7,8 +7,6 @@ package cc.isotopestudio.CombinedForce;
 import java.io.File;
 
 import org.bukkit.ChatColor;
-import org.bukkit.plugin.InvalidDescriptionException;
-import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class CombinedForce extends JavaPlugin {

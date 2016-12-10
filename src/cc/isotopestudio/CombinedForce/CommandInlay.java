@@ -58,12 +58,12 @@ class CommandInlay implements CommandExecutor {
             }
 
             // Search for available lore in weapon
-            int index = 0, pos = -1;
+            int index = 0, weaponLorePos = -1;
             List<String> weaponLore = weapon.getItemMeta().getLore();
             try {
                 for (String temp : weaponLore) {
                     if (temp.equals(plugin.getConfig().getString("add.lore"))) {
-                        pos = index;
+                        weaponLorePos = index;
                         break;
                     }
                     index++;
@@ -73,7 +73,7 @@ class CommandInlay implements CommandExecutor {
                         (new StringBuilder(CombinedForce.prefix)).append(ChatColor.RED).append("此物品无法镶嵌宝石").toString());
                 return true;
             }
-            if (pos == -1) {
+            if (weaponLorePos == -1) {
                 player.sendMessage(
                         (new StringBuilder(CombinedForce.prefix)).append(ChatColor.RED).append("此物品无法镶嵌宝石").toString());
                 return true;
@@ -85,7 +85,6 @@ class CommandInlay implements CommandExecutor {
             try {
                 for (String temp : gemlore) {
                     if (temp.contains(": +")) {
-                        pos = index;
                         loreString = temp;
                         break;
                     }
@@ -96,7 +95,7 @@ class CommandInlay implements CommandExecutor {
                         (new StringBuilder(CombinedForce.prefix)).append(ChatColor.RED).append("无效的宝石").toString());
                 return true;
             }
-            if (pos == -1) {
+            if (loreString == null) {
                 player.sendMessage(
                         (new StringBuilder(CombinedForce.prefix)).append(ChatColor.RED).append("无效的宝石").toString());
                 return true;
@@ -104,9 +103,8 @@ class CommandInlay implements CommandExecutor {
 
             // Add lore to weapon
             ItemMeta weaponMeta = weapon.getItemMeta();
-            List<String> gemLore = weaponMeta.getLore();
-            gemLore.set(pos, plugin.getConfig().getString("loreprefix", "") + loreString);
-            weaponMeta.setLore(gemLore);
+            weaponLore.set(weaponLorePos, plugin.getConfig().getString("loreprefix", "") + loreString);
+            weaponMeta.setLore(weaponLore);
             weapon.setItemMeta(weaponMeta);
             if (isGemonMainHand)
                 player.getInventory().setItemInMainHand(null);
