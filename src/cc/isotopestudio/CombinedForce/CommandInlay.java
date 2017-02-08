@@ -4,8 +4,6 @@
 
 package cc.isotopestudio.CombinedForce;
 
-import java.util.List;
-
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -15,12 +13,22 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 class CommandInlay implements CommandExecutor {
 
     private final CombinedForce plugin;
 
+    private final Set<Material> GEMTYPE;
+    private final Material[] GEMSLIST =
+            {Material.EMERALD, Material.DIAMOND, Material.INK_SACK, Material.GHAST_TEAR, Material.CLAY_BALL, Material.GOLD_NUGGET};
+
     CommandInlay(CombinedForce plugin) {
         this.plugin = plugin;
+        GEMTYPE = new HashSet<>(Arrays.asList(GEMSLIST));
     }
 
     @Override
@@ -45,9 +53,9 @@ class CommandInlay implements CommandExecutor {
             }
 
             boolean isGemonMainHand = true;
-            if (gem.getType() == Material.EMERALD) {
+            if (GEMTYPE.contains(gem.getType())) {
 
-            } else if (weapon.getType() == Material.EMERALD) {
+            } else if (GEMTYPE.contains(weapon.getType())) {
                 isGemonMainHand = false;
                 gem = weapon;
                 weapon = player.getInventory().getItemInMainHand();
