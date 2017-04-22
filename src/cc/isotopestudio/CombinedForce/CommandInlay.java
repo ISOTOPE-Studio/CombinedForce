@@ -18,16 +18,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static cc.isotopestudio.CombinedForce.CombinedForce.plugin;
+
 class CommandInlay implements CommandExecutor {
 
-    private final CombinedForce plugin;
-
     private final Set<Material> GEMTYPE;
-    private final Material[] GEMSLIST =
-            {Material.EMERALD, Material.DIAMOND, Material.INK_SACK, Material.GHAST_TEAR, Material.CLAY_BALL, Material.GOLD_NUGGET};
 
-    CommandInlay(CombinedForce plugin) {
-        this.plugin = plugin;
+    CommandInlay() {
+        Material[] GEMSLIST = {Material.EMERALD, Material.DIAMOND, Material.INK_SACK,
+                Material.GHAST_TEAR, Material.CLAY_BALL, Material.GOLD_NUGGET, Material.COAL};
         GEMTYPE = new HashSet<>(Arrays.asList(GEMSLIST));
     }
 
@@ -52,9 +51,9 @@ class CommandInlay implements CommandExecutor {
                 return true;
             }
 
-            boolean isGemonMainHand = true;
+            boolean isGemonMainHand;
             if (GEMTYPE.contains(gem.getType())) {
-
+                isGemonMainHand = true;
             } else if (GEMTYPE.contains(weapon.getType())) {
                 isGemonMainHand = false;
                 gem = weapon;
@@ -92,7 +91,7 @@ class CommandInlay implements CommandExecutor {
             String loreString = null;
             try {
                 for (String temp : gemlore) {
-                    if (temp.contains(": +")) {
+                    if (temp.contains(": +") || temp.contains(plugin.getConfig().getString("unbreakable.lore"))) {
                         loreString = temp;
                         break;
                     }

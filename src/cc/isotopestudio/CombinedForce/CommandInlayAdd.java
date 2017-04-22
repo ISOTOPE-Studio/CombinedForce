@@ -16,13 +16,10 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.List;
 
+import static cc.isotopestudio.CombinedForce.CombinedForce.plugin;
+import static org.bukkit.Material.*;
+
 class CommandInlayAdd implements CommandExecutor {
-
-    private final CombinedForce plugin;
-
-    CommandInlayAdd(CombinedForce plugin) {
-        this.plugin = plugin;
-    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -75,10 +72,10 @@ class CommandInlayAdd implements CommandExecutor {
     }
 
     private boolean isArmor(Material type) {
-        return type == Material.DIAMOND_HELMET || type == Material.GOLD_HELMET || type == Material.CHAINMAIL_HELMET || type == Material.IRON_HELMET || type == Material.LEATHER_HELMET
-                || type == Material.DIAMOND_CHESTPLATE || type == Material.GOLD_CHESTPLATE || type == Material.CHAINMAIL_CHESTPLATE || type == Material.IRON_CHESTPLATE || type == Material.LEATHER_CHESTPLATE
-                || type == Material.DIAMOND_LEGGINGS || type == Material.GOLD_LEGGINGS || type == Material.CHAINMAIL_LEGGINGS || type == Material.IRON_LEGGINGS || type == Material.LEATHER_LEGGINGS
-                || type == Material.DIAMOND_BOOTS || type == Material.GOLD_BOOTS || type == Material.CHAINMAIL_BOOTS || type == Material.IRON_BOOTS || type == Material.LEATHER_BOOTS
-                || type == Material.DIAMOND_SWORD || type == Material.GOLD_SWORD || type == Material.IRON_SWORD || type == Material.WOOD_SWORD;
+        return type == DIAMOND_HELMET || type == GOLD_HELMET || type == CHAINMAIL_HELMET || type == IRON_HELMET || type == LEATHER_HELMET
+                || type == DIAMOND_CHESTPLATE || type == GOLD_CHESTPLATE || type == CHAINMAIL_CHESTPLATE || type == IRON_CHESTPLATE || type == LEATHER_CHESTPLATE
+                || type == DIAMOND_LEGGINGS || type == GOLD_LEGGINGS || type == CHAINMAIL_LEGGINGS || type == IRON_LEGGINGS || type == LEATHER_LEGGINGS
+                || type == DIAMOND_BOOTS || type == GOLD_BOOTS || type == CHAINMAIL_BOOTS || type == IRON_BOOTS || type == LEATHER_BOOTS
+                /*|| type == DIAMOND_SWORD || type == GOLD_SWORD || type == IRON_SWORD || type == WOOD_SWORD*/;
     }
 }

@@ -11,16 +11,21 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class CombinedForce extends JavaPlugin {
 
+    static CombinedForce plugin;
+
     static final String prefix = (new StringBuilder()).append(ChatColor.GREEN).append("[融魂系统]")
             .append(ChatColor.RESET).toString();
 
     @Override
     public void onEnable() {
+        plugin = this;
+        getServer().getPluginManager().registerEvents(new UnbreakableListener(), this);
         getLogger().info("加载配置文件中");
         createFile();
 
-        this.getCommand("inlay").setExecutor(new CommandInlay(this));
-        this.getCommand("inlayadd").setExecutor(new CommandInlayAdd(this));
+        this.getCommand("inlay").setExecutor(new CommandInlay());
+        this.getCommand("inlayadd").setExecutor(new CommandInlayAdd());
+        this.getCommand("inlaygem").setExecutor(new CommandInlayGem());
 
         getLogger().info("CombinedForce " + getDescription().getVersion() + "成功加载!");
         getLogger().info("CombinedForce 由ISOTOPE Studio制作!");
