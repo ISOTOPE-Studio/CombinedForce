@@ -18,3 +18,6 @@ commands:
     description: CombinedForce Command.
     usage: /xqgem
     aliases: xqgem
+  outgem:
+    description: CombinedForce Command.
+    usage: /outgem

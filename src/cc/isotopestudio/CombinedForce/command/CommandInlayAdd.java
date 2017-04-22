@@ -1,9 +1,10 @@
 /*
- * Copyright (c) 2016. ISOTOPE Studio
+ * Copyright (c) 2017. ISOTOPE Studio
  */
 
-package cc.isotopestudio.CombinedForce;
+package cc.isotopestudio.CombinedForce.command;
 
+import cc.isotopestudio.CombinedForce.CombinedForce;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -19,7 +20,7 @@ import java.util.List;
 import static cc.isotopestudio.CombinedForce.CombinedForce.plugin;
 import static org.bukkit.Material.*;
 
-class CommandInlayAdd implements CommandExecutor {
+public class CommandInlayAdd implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {

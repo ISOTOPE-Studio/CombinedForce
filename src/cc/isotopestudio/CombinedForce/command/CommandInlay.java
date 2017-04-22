@@ -1,9 +1,10 @@
 /*
- * Copyright (c) 2016. ISOTOPE Studio
+ * Copyright (c) 2017. ISOTOPE Studio
  */
 
-package cc.isotopestudio.CombinedForce;
+package cc.isotopestudio.CombinedForce.command;
 
+import cc.isotopestudio.CombinedForce.CombinedForce;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -20,11 +21,11 @@ import java.util.Set;
 
 import static cc.isotopestudio.CombinedForce.CombinedForce.plugin;
 
-class CommandInlay implements CommandExecutor {
+public class CommandInlay implements CommandExecutor {
 
     private final Set<Material> GEMTYPE;
 
-    CommandInlay() {
+    public CommandInlay() {
         Material[] GEMSLIST = {Material.EMERALD, Material.DIAMOND, Material.INK_SACK,
                 Material.GHAST_TEAR, Material.CLAY_BALL, Material.GOLD_NUGGET, Material.COAL};
         GEMTYPE = new HashSet<>(Arrays.asList(GEMSLIST));
