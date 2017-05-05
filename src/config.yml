@@ -2,3 +2,10 @@ add:
   lore: "§3镶嵌孔"
   limit: 5
 #loreprefix: '        '
+unbreakable:
+  name: "§无限耐久宝石"
+  lore: "§3无限耐久"
+unload:
+  '1':
+    lore: "§3无限耐久"
+    cmd: "give <player> diamond 1"

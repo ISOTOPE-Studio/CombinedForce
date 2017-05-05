@@ -4,41 +4,50 @@
 
 package cc.isotopestudio.CombinedForce;
 
-import java.io.File;
-
+import cc.isotopestudio.CombinedForce.command.CommandInlay;
+import cc.isotopestudio.CombinedForce.command.CommandInlayAdd;
+import cc.isotopestudio.CombinedForce.command.CommandInlayGem;
+import cc.isotopestudio.CombinedForce.command.CommandOutGem;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
+
 public class CombinedForce extends JavaPlugin {
 
-	static final String prefix = (new StringBuilder()).append(ChatColor.GREEN).append("[融魂系统]")
-			.append(ChatColor.RESET).toString();
+    public static CombinedForce plugin;
 
-	@Override
-	public void onEnable() {
-		getLogger().info("加载配置文件中");
-		createFile();
+    public static final String prefix = (new StringBuilder()).append(ChatColor.GREEN).append("[融魂系统]")
+            .append(ChatColor.RESET).toString();
 
-		this.getCommand("inlay").setExecutor(new CommandInlay(this));
-		this.getCommand("inlayadd").setExecutor(new CommandInlayAdd(this));
+    @Override
+    public void onEnable() {
+        plugin = this;
+        getServer().getPluginManager().registerEvents(new UnbreakableListener(), this);
+        getLogger().info("加载配置文件中");
+        createFile();
 
-		getLogger().info("CombinedForce 成功加载!");
-		getLogger().info("CombinedForce 由ISOTOPE Studio制作!");
-		getLogger().info("http://isotopestudio.cc");
-	}
+        this.getCommand("inlay").setExecutor(new CommandInlay());
+        this.getCommand("inlayadd").setExecutor(new CommandInlayAdd());
+        this.getCommand("inlaygem").setExecutor(new CommandInlayGem());
+        this.getCommand("outgem").setExecutor(new CommandOutGem());
 
-	@Override
-	public void onDisable() {
-		getLogger().info("CombinedForce 成功卸载!");
-	}
+        getLogger().info("CombinedForce " + getDescription().getVersion() + "成功加载!");
+        getLogger().info("CombinedForce 由ISOTOPE Studio制作!");
+        getLogger().info("http://isotopestudio.cc");
+    }
 
-	private void createFile() {
+    @Override
+    public void onDisable() {
+        getLogger().info("CombinedForce 成功卸载!");
+    }
 
-		File file;
-		file = new File(getDataFolder(), "config" + ".yml");
-		if (!file.exists()) {
-			saveDefaultConfig();
-		}
-	}
+    private void createFile() {
+        File file;
+        file = new File(getDataFolder(), "config" + ".yml");
+        if (!file.exists()) {
+            saveDefaultConfig();
+        }
+    }
 
 }
