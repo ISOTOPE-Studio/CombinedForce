@@ -53,7 +53,7 @@ public class CommandInlayAdd implements CommandExecutor {
             int count = 0;
             for (String line : lore) {
                 if (line.contains(plugin.getConfig().getString("add.lore")) ||
-                        line.contains(": +")) {
+                        CommandInlay.isGemLore(line)) {
                     count++;
                 }
             }

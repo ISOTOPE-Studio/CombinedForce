@@ -4,7 +4,7 @@ main: cc.isotopestudio.CombinedForce.CombinedForce
 author: Mars
 description: Combined Forces, Inlay Gems
 website: http://isotopestudio.cc
-version: 3.0
+version: 3.1
 commands:
   inlay:
     description: CombinedForce Command.

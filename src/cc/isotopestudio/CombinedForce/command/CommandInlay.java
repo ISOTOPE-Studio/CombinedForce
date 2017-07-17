@@ -31,6 +31,29 @@ public class CommandInlay implements CommandExecutor {
         GEMTYPE = new HashSet<>(Arrays.asList(GEMSLIST));
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    static boolean isGemLore(String line) {
+        if (line.contains(plugin.getConfig().getString("unbreakable.lore"))) {
+            return true;
+        }
+        int i = line.indexOf("+");
+        if (i > -1) {
+            String substring = line.substring(i);
+            int j = substring.indexOf(" ");
+            try {
+                if (substring.charAt(j - 1) == '%') {
+                    Integer.parseInt(substring.substring(0, j - 1));
+                } else {
+                    Integer.parseInt(substring.substring(0, j));
+                }
+            } catch (Exception e) {
+                return false;
+            }
+            return true;
+        }
+        return false;
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("inlay")) {
@@ -92,11 +115,10 @@ public class CommandInlay implements CommandExecutor {
             String loreString = null;
             try {
                 for (String temp : gemlore) {
-                    if (temp.contains(": +") || temp.contains(plugin.getConfig().getString("unbreakable.lore"))) {
+                    if (isGemLore(temp)) {
                         loreString = temp;
                         break;
                     }
-                    index++;
                 }
             } catch (Exception e) {
                 player.sendMessage(
